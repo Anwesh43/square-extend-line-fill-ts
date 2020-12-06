@@ -147,3 +147,45 @@ class Animator {
         }
     }
 }
+
+class SELFNode {
+
+    state : State = new State()
+    next : SELFNode 
+    prev : SELFNode 
+
+    constructor(private i : number) {
+        this.addNeighbor()
+    }
+
+    addNeighbor() {
+        if (this.i < colors.length - 1) {
+            this.next = new SELFNode(this.i + 1)
+            this.next.prev = this 
+        }
+    }
+
+    draw(context : CanvasRenderingContext2D) {
+        DrawingUtil.drawSELFNode(context, this.i, this.state.scale)
+    }
+
+    update(cb : Function) {
+        this.state.update(cb)
+    }
+
+    startUpdating(cb : Function) {
+        this.state.startUpdating(cb)
+    }
+
+    getNext(dir : number, cb : Function) : SELFNode {
+        var curr : SELFNode = this.prev 
+        if (dir == 1) {
+            curr = this.next 
+        }
+        if (curr != null) {
+            return curr 
+        }
+        cb()
+        return this
+    }
+}
