@@ -44,8 +44,9 @@ class DrawingUtil {
         context.lineTo(2 * size, -2 * size)
         context.lineTo(2 * size, 2 * size)
         context.lineTo(size, size)
+        context.lineTo(size, -size)
         context.clip()
-        context.fillRect(-size, -2 * size, 2 * size * sf3, 4 * size * sf3)
+        context.fillRect(size, -2 * size, size * sf3, 4 * size)
     }
 
     static drawSquareExtendLineFill(context : CanvasRenderingContext2D, scale : number) {
