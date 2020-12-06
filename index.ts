@@ -212,3 +212,25 @@ class SquareExtendLineFill {
         this.curr.startUpdating(cb)
     }
 }
+
+class Renderer {
+
+    self : SquareExtendLineFill = new SquareExtendLineFill()
+    animator : Animator = new Animator()
+
+    render(context : CanvasRenderingContext2D) {
+        this.self.draw(context)
+    }
+
+    handleTap(cb : Function) {
+        this.self.startUpdating(() => {
+            this.animator.start(() => {
+                cb()
+                this.self.update(() => {
+                    this.animator.stop()
+                    cb()
+                })
+            })
+        })
+    }
+}
