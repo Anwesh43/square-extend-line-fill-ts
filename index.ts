@@ -21,7 +21,7 @@ class ScaleUtil {
     }
 
     static divideScale(scale : number, i : number, n : number) : number {
-        return Math.max(0)
+        return Math.min(1 / n, ScaleUtil.maxScale(scale, i, n)) * n
     }
 
     static sinify(scale : number) : number {
@@ -57,10 +57,12 @@ class DrawingUtil {
         const sf4 : number = ScaleUtil.divideScale(sf, 3, parts)
         context.save()
         context.translate(w / 2, h / 2)
-        context.fillRect(-size * sf1, -size * sf1, size * sf1, size * sf1)
+        context.rotate(sf4 * Math.PI / 2)
+        context.fillRect(-size * sf1, -size * sf1, 2 * size * sf1, 2 * size * sf1)
         for (var j = 0; j < 2; j++) {
-            DrawingUtil.drawLine(context, size, -size, size + size * sf2, size * (1 - 2 * j) * (1 + sf2))
+            DrawingUtil.drawLine(context, size, size * (1 - 2 * j), size + size * sf2, size * (1 - 2 * j) * (1 + sf2))
         }
+        DrawingUtil.drawExtendLineFill(context, size, sf3)
         context.restore()
     }
 
@@ -116,6 +118,7 @@ class State {
 
     update(cb : Function) {
         this.scale += scGap * this.dir 
+        console.log(this.scale)
         if (Math.abs(this.scale - this.prevScale) > 1) {
             this.scale = this.prevScale + this.dir 
             this.dir = 0 
